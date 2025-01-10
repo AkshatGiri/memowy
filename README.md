@@ -1,58 +1,144 @@
 ## Memowy 💖
 
-Memowy is a project focused on developing advanced memory management and retrieval systems for AI agents. As Large Language Models (LLMs) continue to evolve, their ability to process and generate information has grown significantly. However, the management of knowledge and context over time remains a critical bottleneck. Memowy aims to address this by drawing inspiration from human cognitive systems to create more sophisticated memory architectures.
+The latest LLMs are really good. So why don't we have something like Jarvis yet? An AI agent that's your friend / coworker. With whom you can have an indefinite conversation and as you do it understands you more, learns from past interactions, works on tasks while you're away and other than having a physical form interacts like a human.
 
-## The Problem Space
+Jarvis ( or a human ) doesn't forget about the conversation you had yesterday. It doens't get amnesia every time you start a new "chat". Dammit why do we have to start a "new chat" anyways?
 
-The current generation of AI agents faces significant challenges in maintaining coherent, long-term memory structures. While models can process increasingly large amounts of information within their context windows, they struggle with selective retention and retrieval of relevant information over extended interactions. This limitation becomes particularly apparent in scenarios requiring persistent memory across multiple sessions or platforms.
+Well it's a side effect of the underlying architecture of LLMs. Once a model is trained it's "weights" are frozen. At that point it's more like a calculator. It takes input and produces outputs, but doesn't inherently have a memory to store new intormation. You can think of it as a processing unit or reasoning engine if you will. It can only produce outputs based on the information given to it. For something like ChatGPT this is just the chat history. But there's a limit to the amount of information we can input and output at a time. This is the "context window" of the model. It's defined by the number of tokens the model can process at a time. Most models currently have a context window of 200k tokens or less ( around 150k words ).
 
-The challenge extends beyond simple information storage and retrieval. AI agents need to maintain consistent understanding and personality across interactions, manage multiple concurrent conversations, and handle complex task switching - all while preserving relevant context. Current solutions often fail to capture the nuanced relationships between pieces of information and struggle to determine the relative importance of different memory elements.
+That's a good amount of context window and it's a growing number with more advanced models. Now, our job is to figure out how to fill this context window with the most relevant information to get the best outputs. To have the models behave in the way we want them to behave. This is a fairly difficult problem to solve. The current solutions have serious limitations which is why systems require us to start a new chat after a while or when starting a topic discussion. And honestly this is fine if you're using the model for narrow tasks or using the seperate chats like an organization tool. But it's not fine if you're trying to build Jarvis or any sort of complex AI Agent.
 
-### Use Cases and Requirements
+One of the main reasons building a true Jarvis like AI assistant remains a challenge is because of a robust memory management system. The ability to remember past interactions, user preferences, context and retrieve relevent information when needed is critical. In order to bridge the gap between mostly statelemess LLMs and AI Agents to agents that act and feel like humans we need to fix the memory problem.
 
-AI agents are increasingly being deployed in scenarios that demand sophisticated memory management. These include long-term project collaboration, where agents need to maintain detailed context about project specifications and progress; multi-platform interactions, where consistency across different communication channels is crucial; and complex task management, where agents must handle interruptions and context switching while maintaining progress on multiple objectives.
+So, Memowy is a project focused on researching and developing advanced memory management and retrieval systems for LLMs and AI agents.
 
-A particular challenge lies in relationship building - agents need to develop and maintain an understanding of user preferences, interaction history, and shared context over time. This requires not just storing information, but understanding its relevance and impact on future interactions.
+### The Dream
 
-## Current Approaches and Their Limitations
+Enabling a powerful context management and memory retrieval system would allow us to unlock quite a few powerful things.
 
-The predominant approaches to AI memory management currently center around three main techniques: RAG (Retrieval Augmented Generation), vector embeddings with chunk-based storage, and explicit fact storage. While these methods have advanced the field, they fall short in several crucial aspects.
+- Indefinite conversations with AI agents where they actually learn about you, your preferences, and adapt their interaction style accordingly. Retrieve information about previous discussions. Resume old conversations without losing context etc.
 
-RAG systems, while powerful for knowledge retrieval, often struggle with context relevance and information completeness. The chunking process frequently breaks apart related information, leading to fragmented understanding. Vector embeddings, while effective for similarity-based retrieval, often miss crucial contextual relationships and nuances.
+- Cross-platform consistency. Imagine your agent helping you on Discord, reviewing your PRs on GitHub, and catching up with you on Telegram - all while maintaining the same personality and context. Your friends don't forget about you across different platforms, and neither should AI Agents.
 
-Traditional fact storage approaches tend to be too rigid, failing to capture the fluid nature of human-like interactions. They struggle with implicit information and the evolution of understanding over time. Current summarization techniques, while helpful for managing large amounts of information, often lose critical details and context in the compression process.
+- True multi-tasking capabilities. The agent can work on multiple projects, pause when you need something urgent, and resume without losing context. Just like how you can ask a coworker "hey, remember that authentication system we were working on last week? Can we add OAuth to that?".
 
-## Project Goals and Vision
+- Complex project management where the agent actually understands the evolution of the project. It remembers architectural decisions, previous discussions about trade-offs, and why you chose certain approaches over others.
 
-Memowy aims to create a memory management system that mirrors human cognitive processes. The project focuses on three core capabilities: Natural Memory Management, which involves sophisticated weighting and retrieval systems; Contextual Awareness, enabling intelligent determination of information relevance; and Relationship Building, allowing agents to maintain and evolve their understanding over time.
+### Current Solutions
 
-A key insight driving this project is the observation that major breakthroughs in LLM development have often paralleled human cognitive processes. From neural encoding to sensory transformations and chain-of-thought reasoning, the most successful advances have drawn inspiration from human cognition. Following this pattern, Memowy looks to human memory systems for inspiration in solving current memory management challenges.
+Right now, we have a few approaches to handle memory in AI systems:
 
-## Technical Approach
+1. The most common approach is RAG (Retrieval Augmented Generation) combined with vector databases. We take chunks of text, turn them into vectors, store them in a database, and retrieve them based on similarity. It's like having a really smart search engine. But it's not really memory - it's more like having a bunch of sticky notes that you frantically search through when needed.
 
-The project will begin with a comprehensive evaluation phase to quantify the specific limitations of current memory management systems. This will involve developing benchmark scenarios that test various aspects of memory management, from basic recall to complex context switching and relationship maintenance.
+2. We also use summarization. Take a long conversation, compress it into key points, and hope we didn't lose anything important. Spoiler alert: we always lose something important.
 
-Following the evaluation phase, the project will focus on implementing bio-inspired memory mechanisms. This includes:
+3. Some systems keep a list of facts about users and contexts. "User prefers TypeScript. User has a dog named Max."
 
-- Pattern completion systems for more sophisticated information retrieval
-- Priming and spreading activation for related concept management
-- Retrieval competition mechanisms for relevance ranking
-- Metadata-enhanced memory encoding for context awareness
+These approaches are useful tools, but they're not enough but they have shortfalls.
 
-The implementation will focus on creating modular, scalable systems that can be integrated with various AI architectures. Special attention will be paid to computational efficiency and the balance between comprehensive memory storage and practical retrieval speeds.
+### Why Current Solutions Fall Short
 
-## Project Phases
+Current solutions have specific limitations that prevent them from achieving human-like memory capabilities:
 
-The development process is structured into distinct phases:
+Vector Databases & Embeddings:
 
-1. Evaluation and Benchmarking
-   Focus on understanding current limitations through systematic testing of existing solutions. This phase will establish baseline metrics and specific targets for improvement.
+- The chunking process often breaks apart related information, leading to loss of context
+- Similarity search is a fairly shallow way to search for information. It's like searching through a book by only looking at individual paragraphs
+- Even with good chunking, retrieved information is often incomplete because related information exists in other chunks
+- Embeddings lose information during the compression process
 
-2. Architecture Development
-   Design and implementation of the core memory management systems, drawing on insights from human cognitive processes and recent advances in AI research.
+Summarization:
 
-3. Integration and Testing
-   Implementation of the memory systems in practical applications, with iterative refinement based on performance metrics and real-world usage patterns.
+- Misses crucial nuances in conversations and documents
+- Difficult to automatically determine what details are actually important for future use
+- Can't effectively capture complex relationships and dependencies
+- Loses temporal aspects and evolution of discussions
+- Often creates overly generic summaries that lack actionable details
 
-4. Optimization and Scaling
-   Refinement of the systems for broader deployment, including optimization for different use cases and development of integration guidelines for various AI architectures.
+Fact Storage:
+
+- Too rigid and structured for natural interaction
+- Misses implicit information and context
+- Can't capture how relationships and understanding evolve over time
+- Struggles with contradictions and updates to stored information
+- No mechanism for priority or relevance scoring
+- Grows large over time without a way to fetch only relevant information
+
+While each one of them have their usecases and have been successful in their own right, they haven't been effective in building a true AI agent that can act and feel like a human.
+
+### The Approach
+
+Here's where things get interesting. If you look at major breakthroughs in LLM development, they often mirror human cognition:
+
+- Neural nets ≈ Human neurons
+- Transformer architecture ≈ Human attention mechanisms ( Sensory Memory )
+- Chain of thought / Test time compute ≈ Human longer, harder and step-by-step for better results
+
+So why not apply the same principle to memory? Human memory systems have evolved over millions of years to be incredibly efficient at storing and retrieving relevant information. We have mechanisms for:
+
+- Pattern completion (remembering entire scenes from small triggers)
+- Priming (preparing related memories based on context)
+- Memory consolidation (moving information from short-term to long-term storage)
+- Retrieval-induced forgetting (actively suppressing irrelevant memories)
+
+### Research Direction
+
+To build a better memory system, we need to first understand and formalize our current problems with concrete examples. We'll create various scenarios that highlight the limitations of current memory systems. This will help us properly evaluate different solutions.
+
+After we have properly quantified the problems we're trying to solve, we can start implementing solutions based on human memory systems. We'll start by implementing and testing each mechanism separately:
+
+Pattern Completion:
+When you remember something, you don't need the complete memory to recall it. A small trigger can help you remember the entire context. We need to build systems that can do the same - reconstruct complete contexts from partial information.
+
+Priming and Retrieval:
+Your brain doesn't just retrieve memories - it prepares related ones for quick access. When you're working on a React project, your brain primes memories about JavaScript, web development, and your project's architecture. We need systems that can pre-load relevant context based on the current situation.
+
+Memory Competition:
+When you try to remember something, your brain activates multiple competing memories and then selectively filters out irrelevant ones. This is way more sophisticated than current similarity search approaches. We need ranking systems that can:
+
+- Evaluate memory relevance based on current context
+- Consider how recently memories were accessed
+- Account for emotional significance and frequency of use
+- Actively suppress irrelevant competing memories
+
+Memory Evolution:
+Memories aren't static - they evolve as you gain new information. That funny bug you encountered last week becomes more significant when you realize it's a pattern in your codebase. Our systems need to:
+
+- Update stored information based on new context
+- Strengthen or weaken memory connections over time
+- Merge related information from different interactions
+- Handle contradictions and updates gracefully
+
+### Project Phases
+
+1. Evaluation Phase
+   First, we need to properly understand what we're trying to solve. We'll create benchmark scenarios that test different aspects of memory management:
+
+- Long-running conversations with context switches
+- Multi-project task management
+- Cross-platform interaction consistency
+- Knowledge evolution and updates
+
+2. Research Implementation
+   We'll implement each bio-inspired mechanism separately and evaluate its effectiveness:
+
+- Build pattern completion systems
+- Implement priming and retrieval mechanisms
+- Create sophisticated ranking systems
+- Develop memory evolution capabilities
+
+3. Integration
+   The real challenge comes in combining these systems effectively:
+
+- Balancing different memory mechanisms
+- Managing computational resources
+- Ensuring real-time performance
+- Handling edge cases and conflicts
+
+4. Testing and Iteration
+   Finally, we'll need extensive testing in real-world scenarios:
+
+- Long-term conversation testing
+- Multi-user environment testing
+- Cross-platform consistency testing
+- Performance and resource usage optimization
