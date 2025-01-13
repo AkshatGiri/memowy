@@ -142,3 +142,10 @@ Memories aren't static - they evolve as you gain new information. That funny bug
 - Multi-user environment testing
 - Cross-platform consistency testing
 - Performance and resource usage optimization
+
+### References
+
+Any research paper or resource that is useful.
+
+- MemoRAG: https://arxiv.org/abs/2409.05591
+-
